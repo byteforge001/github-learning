@@ -20,20 +20,22 @@ window.addEventListener('scroll', function() {
     const navbar = document.querySelector('header');
     if (window.scrollY > 50) {
         navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
-        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
     } else {
-        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-        navbar.style.background = '#fff';
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
     }
 });
 
 // Add animation to feature cards when they come into view
 const featureCards = document.querySelectorAll('.feature-card');
 const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry, index) => {
         if (entry.isIntersecting) {
-            entry.target.style.opacity = 1;
-            entry.target.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                entry.target.style.opacity = 1;
+                entry.target.style.transform = 'translateY(0)';
+            }, index * 100);
         }
     });
 }, {
@@ -43,7 +45,7 @@ const observer = new IntersectionObserver((entries) => {
 featureCards.forEach(card => {
     card.style.opacity = 0;
     card.style.transform = 'translateY(20px)';
-    card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
     observer.observe(card);
 });
 
@@ -51,11 +53,13 @@ featureCards.forEach(card => {
 const resourceCards = document.querySelectorAll('.resource-card');
 resourceCards.forEach(card => {
     card.addEventListener('mouseenter', function() {
-        this.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.1)';
+        this.style.transform = 'translateY(-10px)';
+        this.style.boxShadow = '0 15px 30px rgba(0, 0, 0, 0.15)';
     });
     
     card.addEventListener('mouseleave', function() {
-        this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.05)';
+        this.style.transform = 'translateY(0)';
+        this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.1)';
     });
 });
 
@@ -73,8 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (heroContent) {
         heroContent.style.opacity = 0;
-        heroContent.style.transform = 'translateY(20px)';
-        heroContent.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+        heroContent.style.transform = 'translateY(30px)';
+        heroContent.style.transition = 'opacity 1s ease, transform 1s ease';
         
         setTimeout(() => {
             heroContent.style.opacity = 1;
@@ -84,12 +88,51 @@ document.addEventListener('DOMContentLoaded', function() {
     
     if (heroImage) {
         heroImage.style.opacity = 0;
-        heroImage.style.transform = 'translateY(20px)';
-        heroImage.style.transition = 'opacity 0.8s ease 0.2s, transform 0.8s ease 0.2s';
+        heroImage.style.transform = 'translateY(30px)';
+        heroImage.style.transition = 'opacity 1s ease 0.3s, transform 1s ease 0.3s';
         
         setTimeout(() => {
             heroImage.style.opacity = 1;
             heroImage.style.transform = 'translateY(0)';
         }, 500);
+    }
+    
+    // Add staggered animation to feature cards
+    const featureCards = document.querySelectorAll('.feature-card');
+    featureCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+        
+        setTimeout(() => {
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+        }, 400 + (index * 100));
+    });
+});
+
+// Enhanced scroll effect for navbar
+let lastScrollTop = 0;
+window.addEventListener('scroll', function() {
+    const navbar = document.querySelector('header');
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    
+    if (scrollTop > lastScrollTop && scrollTop > 100) {
+        // Scrolling down
+        navbar.style.transform = 'translateY(-100%)';
+    } else {
+        // Scrolling up
+        navbar.style.transform = 'translateY(0)';
+    }
+    
+    lastScrollTop = scrollTop;
+    
+    // Update navbar style based on scroll position
+    if (scrollTop > 50) {
+        navbar.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+    } else {
+        navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.05)';
+        navbar.style.background = 'rgba(255, 255, 255, 0.95)';
     }
 });
